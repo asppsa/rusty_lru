@@ -4,34 +4,48 @@
 use lru::LruCache;
 use std::ops::{Deref, DerefMut};
 use rutie::{AnyObject, Class, Module, Array, Integer, Boolean, AnyException, GC, NilClass, Object, VM};
+use rutie::types::Value;
 
 pub struct HashableObject {
-  inner: AnyObject,
+  value: Value,
   hash: i64
 }
 
 impl HashableObject {
-  fn new(object: AnyObject) -> Self {
-    HashableObject {
-      hash: Self::get_hash(&object),
-      inner: object
-    }
-  }
-
-  fn get_hash(object: &AnyObject) -> i64 {
-    // Regardless of the method used, this should be an Integer
-    let hash: Integer = object.send("hash", &[])
+  fn get_hash<T: Object>(object: &T) -> i64 {
+    object.send("hash", &[])
       .try_convert_to::<Integer>()
       .map_err(|e| VM::raise_ex(e))
-      .unwrap();
+      .unwrap()
+      .to_i64()
+  }
+}
 
-    hash.to_i64()
+impl<T: Object> From<&T> for HashableObject {
+  fn from(object: &T) -> Self {
+    Self {
+      hash: Self::get_hash(object),
+      value: object.value()
+    }
+  }
+}
+
+impl From<Value> for HashableObject {
+  fn from(value: Value) -> Self {
+    Self::from(&AnyObject::from(value))
+  }
+}
+
+impl Object for HashableObject {
+  #[inline]
+  fn value(&self) -> Value {
+    self.value
   }
 }
 
 impl PartialEq for HashableObject {
   fn eq(&self, other: &Self) -> bool {
-    self.inner.is_eql(&other.inner)
+    self.is_eql(other)
   }
 }
 
@@ -41,20 +55,6 @@ impl std::hash::Hash for HashableObject {
   // Use the oject's hash if it has one; otherwise, fall back to object ID
   fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
     self.hash.hash(state);
-  }
-}
-
-impl Deref for HashableObject {
-  type Target = AnyObject;
-
-  fn deref(&self) -> &AnyObject {
-    &self.inner
-  }
-}
-
-impl DerefMut for HashableObject {
-  fn deref_mut(&mut self) -> &mut AnyObject {
-    &mut self.inner
   }
 }
 
@@ -72,23 +72,23 @@ impl ObjectLruCache {
   }
 
   fn get(&mut self, key: &AnyObject) -> Option<&AnyObject> {
-    self.inner.get(&HashableObject::new(key.to_any_object()))
+    self.inner.get(&HashableObject::from(key))
   }
 
   fn put(&mut self, key: AnyObject, value: AnyObject) -> Option<AnyObject> {
-    self.inner.put(HashableObject::new(key), value)
+    self.inner.put(HashableObject::from(&key), value)
   }
 
   fn pop(&mut self, key: &AnyObject) -> Option<AnyObject> {
-    self.inner.pop(&HashableObject::new(key.to_any_object()))
+    self.inner.pop(&HashableObject::from(key))
   }
 
   fn peek(&self, key: &AnyObject) -> Option<&AnyObject> {
-    self.inner.peek(&HashableObject::new(key.to_any_object()))
+    self.inner.peek(&HashableObject::from(key))
   }
 
   fn contains(&self, key: &AnyObject) -> bool {
-    self.inner.contains(&HashableObject::new(key.to_any_object()))
+    self.inner.contains(&HashableObject::from(key))
   }
 }
 
@@ -115,7 +115,7 @@ wrappable_struct! {
   // `data` is a mutable reference to the wrapped data (`&mut ObjectLruCache`).
   mark(cache) {
     for (key, value) in &cache.inner {
-      GC::mark(&key.inner);
+      GC::mark(key);
       GC::mark(value);
     }
   }
@@ -292,7 +292,7 @@ mod tests {
      * Test HashableObject hashes as intended
      */
     let nil = NilClass::new();
-    let ho = HashableObject::new(nil.to_any_object());
+    let ho = HashableObject::from(&nil);
 
     let mut hasher1 = DefaultHasher::new();
     let mut hasher2 = DefaultHasher::new();
