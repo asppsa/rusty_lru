@@ -1,13 +1,18 @@
 # RustyLRU
 
+[![Build Status](https://travis-ci.org/asppsa/rusty_lru.svg?branch=master)](https://travis-ci.org/asppsa/rusty_lru)
+
 This gem provides an [LRU
 cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))
-for Ruby.  It is actually just a [rutie](https://rubygems.org/gems/rutie)-based
-wrapper around the [lru](https://crates.io/crates/lru) crate.
+for Ruby.  It uses [Rutie](https://rubygems.org/gems/rutie) to wrap the
+[lru](https://crates.io/crates/lru) crate for [Rust](https://rust-lang.org/).
 
 From a Ruby perspective, the API is close to that of the `Hash` class.  Like a
 Hash, values can be any object whatsoever, and keys can be any object that
-responds to `#hash` and `#eql?` correctly.
+responds to `#hash` and `#eql?` correctly.  It differs in that it will never
+grow beyond a capped number of key-value pairs, which makes it suitable to use
+as a cache.
+
 
 ## Installation
 
@@ -25,6 +30,7 @@ And then execute:
 Or install it yourself as:
 
     $ gem install rusty_lru
+
 
 ## Usage
 
@@ -106,10 +112,12 @@ release a new version, update the version number in `version.rb`, and then run
 git commits and tags, and push the `.gem` file to
 [rubygems.org](https://rubygems.org).
 
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
 https://github.com/asppsa/rusty_lru.
+
 
 ## License
 
