@@ -1,7 +1,7 @@
 require 'rusty_lru/version'
 require 'rutie'
 
-# Top-level docs here
+# This is the container module for the {RustyLRU::Cache} class.
 module RustyLRU
 
   # Loads Rust code
