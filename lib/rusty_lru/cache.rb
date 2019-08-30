@@ -22,6 +22,9 @@ module RustyLRU
   # {https://ruby-doc.org/core/Enumerable.html Enumerable} module, so it
   # responds to a number of methods not listed here, such as #map, #reduce, #to_a,
   # #to_h, etc.
+  #
+  # Like a Hash, values can be any object whatsoever, and keys can be any
+  # object that responds to #hash and #eql? correctly.
   class Cache
     # @!method initialize(cap=nil)
     #   Initializes a new cache object.

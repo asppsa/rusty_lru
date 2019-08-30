@@ -7,11 +7,9 @@ cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_u
 for Ruby.  It uses [Rutie](https://rubygems.org/gems/rutie) to wrap the
 [Rust](https://rust-lang.org/)'s [lru](https://crates.io/crates/lru) crate.
 
-From a Ruby perspective, the API is close to that of the `Hash` class.  Like a
-Hash, values can be any object whatsoever, and keys can be any object that
-responds to `#hash` and `#eql?` correctly.  It differs in that it will never
-grow beyond a capped number of key-value pairs, which makes it suitable to use
-as a cache.
+From a Ruby perspective, the API is close to that of the `Hash` class.   It
+differs in that it will never grow beyond a capped number of key-value pairs,
+which makes it suitable to use as a cache.
 
 
 ## Installation
