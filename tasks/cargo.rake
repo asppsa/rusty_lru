@@ -1,9 +1,9 @@
 namespace :cargo do
   task :build do
-    system "cargo build --release"
+    sh "cargo build --release"
   end
 
   task :test do
-   system "cargo test"
+    sh "cargo test"
   end
 end
