@@ -1,7 +1,14 @@
----
-sudo: false
 language: ruby
-cache: bundler
+os:
+  - osx
+  - linux
 rvm:
-  - 2.6.3
-before_install: gem install bundler -v 2.0.2
+  - 2.6
+  - 2.5
+  - 2.4
+  - truffleruby
+before_install:
+  - gem update --system
+  - gem install bundler
+cache: bundler
+script: bundle exec rspec
