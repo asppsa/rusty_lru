@@ -1,2 +1,2 @@
 load File.join(__dir__, '../tasks/cargo.rake')
-task :default => 'cargo:build'
+task default: 'cargo:build'

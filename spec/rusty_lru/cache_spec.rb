@@ -136,7 +136,7 @@ RSpec.shared_examples 'a hash map' do
 
   describe '#key?' do
     it 'returns true iff the key is present' do
-      expect { subject["test"] = 'ok' }
+      expect { subject['test'] = 'ok' }
         .to change { subject.key?('test') }
         .from(false)
         .to(true)

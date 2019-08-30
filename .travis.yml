@@ -21,6 +21,7 @@ cache:
 script:
   - LD_LIBRARY_PATH=$(ruby -e "print RbConfig::CONFIG['libdir']") cargo test
   - bundle exec rake spec
+  - bundle exec rubocop
 matrix:
   allow_failures:
     - env: RUST_VERSION=nightly
