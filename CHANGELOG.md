@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Just an update to the README and the gemspec.
 
-## [v0.1.0] - 2019-08-29
+## [v0.1.0] - 2019-08-30
 ### Added
 - Implement basic Hash-like functionality by using
   [rutie](https://rubygems.org/gems/rutie) to wrap the
