@@ -1,5 +1,6 @@
 # RustyLRU
 
+[![Gem Version](https://badge.fury.io/rb/rusty_lru.svg)](https://badge.fury.io/rb/rusty_lru)
 [![Build Status](https://travis-ci.org/asppsa/rusty_lru.svg?branch=master)](https://travis-ci.org/asppsa/rusty_lru)
 
 This gem provides an [LRU
