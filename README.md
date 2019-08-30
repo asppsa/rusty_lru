@@ -5,7 +5,7 @@
 This gem provides an [LRU
 cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))
 for Ruby.  It uses [Rutie](https://rubygems.org/gems/rutie) to wrap the
-[lru](https://crates.io/crates/lru) crate for [Rust](https://rust-lang.org/).
+[Rust](https://rust-lang.org/)'s [lru](https://crates.io/crates/lru) crate.
 
 From a Ruby perspective, the API is close to that of the `Hash` class.  Like a
 Hash, values can be any object whatsoever, and keys can be any object that
@@ -33,14 +33,18 @@ Or install it yourself as:
 
 
 ## Usage
-
+ 
 The key concept of an LRU cache is the LRU list, which is a list of all the
 key-value pairs in the cache, ordered by how recently they are used.  When the
 cache fills to capacity, the pair at the bottom of the list will be dropped
 each time a new pair is added.  Accessing/updating an existing pair in the
 cache moves it to the top of the list.
 
-Real basic usage:
+Comprehensive documentation is available online:
+
+- [Bleeding edge](https://rubydoc.info/github/asppsa/rusty_lru/master)
+
+For the impatient, here is an example of basic usage:
 
 ~~~ ruby
 # Creates a cache with a cap of 1,000 entries.
@@ -58,16 +62,19 @@ cache['y'] = proc { 'anything can go here' }
 cache['z'] = {"x" => 1}
 cache.size #=> 3
 
+# Overwriting a key returns the old value.
+cache['x'] = :q #=> :y
+
 # Retrieves the least recently used key-value pair without updating the LRU
 # list.
-cache.lru_pair #=> ['x', :y]
+cache.lru_pair #=> ['x', :q]
 
 # Returns true iff the key exists. Does not affect the LRU list.
 cache.key?('x') #=> true
 cache.key?(:test) #=> false
 
 # Retrieves a value by key, updating the LRU list.
-cache['x'] #=> :y
+cache['x'] #=> :q
 cache.lru_pair #=> ['y', #<Proc:...>]
 
 # Retrieves and deletes the least recently used key-value pair.
@@ -80,7 +87,7 @@ cache.peek('z') #=> {"x" => 1}
 cache.lru_pair #=> ['z', {"x" => 1}]
 
 # Deletes a key-value pair, returning the deleted value.
-cache.delete('x') #=> :y
+cache.delete('x') #=> :q
 cache.size #=> 1
 
 # Deletes all pairs from the cache
