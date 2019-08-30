@@ -9,13 +9,17 @@ Gem::Specification.new do |spec|
   spec.email         = ['me@asph.dev']
 
   spec.summary       = 'An LRU cache implemented in Rust'
-  spec.description   = 'This gem wraps a the lru crate from Rustland, providing a Hash-like interface'
+  spec.description   = <<-DESC
+  This gem provides an LRU cache with an interface close to Hash. It uses Rutie
+  to wrap the Rust 'lru' crate.
+  DESC
   spec.homepage      = 'https://github.com/asppsa/rusty_lru'
   spec.license       = 'Apache-2.0'
 
+  spec.metadata['changelog_uri'] = 'https://github.com/asppsa/rusty_lru/blob/master/CHANGELOG.md'
+  spec.metadata['documentation_uri'] = 'https://rubydoc.info/gems/rusty_lru'
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/asppsa/rusty_lru.git'
-  spec.metadata['changelog_uri'] = 'https://github.com/asppsa/rusty_lru/blob/master/CHANGELOG.md'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

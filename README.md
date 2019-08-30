@@ -5,7 +5,7 @@
 This gem provides an [LRU
 cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))
 for Ruby.  It uses [Rutie](https://rubygems.org/gems/rutie) to wrap the
-[Rust](https://rust-lang.org/)'s [lru](https://crates.io/crates/lru) crate.
+[Rust](https://rust-lang.org/) [lru](https://crates.io/crates/lru) crate.
 
 From a Ruby perspective, the API is close to that of the `Hash` class.   It
 differs in that it will never grow beyond a capped number of key-value pairs,
@@ -40,6 +40,7 @@ cache moves it to the top of the list.
 
 Comprehensive documentation is available online:
 
+- [Latest release](https://rubydoc.info/gems/rusty_lru)
 - [Bleeding edge](https://rubydoc.info/github/asppsa/rusty_lru/master)
 
 For the impatient, here is an example of basic usage:
