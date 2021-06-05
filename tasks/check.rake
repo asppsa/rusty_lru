@@ -1,6 +1,6 @@
 namespace :check do
-  desc "Benchmark Rusty against lru_redux"
-  task bench: "cargo:build" do
+  desc 'Benchmark Rusty against lru_redux'
+  task bench: 'cargo:build' do
     require 'benchmark'
     require 'lru_redux'
     require 'rusty_lru'
@@ -25,7 +25,7 @@ namespace :check do
     end
   end
 
-  task mem: "cargo:build" do
+  task mem: 'cargo:build' do
     require 'rusty_lru'
     require 'securerandom'
 
@@ -39,7 +39,7 @@ namespace :check do
     end
   end
 
-  task threadsafe: "cargo:build" do
+  task threadsafe: 'cargo:build' do
     require 'rusty_lru'
     require 'securerandom'
 

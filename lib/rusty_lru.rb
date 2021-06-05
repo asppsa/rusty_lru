@@ -7,5 +7,5 @@ module RustyLRU
   Rutie.new(:rusty_lru).init 'Init_rusty_lru', __dir__
 
   # Now load the additional methods
-  require_relative './rusty_lru/cache.rb'
+  require_relative './rusty_lru/cache'
 end
