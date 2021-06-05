@@ -13,7 +13,7 @@ pub struct HashableObject {
 
 impl HashableObject {
   fn get_hash<T: Object>(object: &T) -> i64 {
-    object.send("hash", &[])
+    unsafe { object.send("hash", &[]) }
       .try_convert_to::<Integer>()
       .map_err(|e| VM::raise_ex(e))
       .unwrap()
@@ -297,7 +297,7 @@ mod tests {
     let mut hasher1 = DefaultHasher::new();
     let mut hasher2 = DefaultHasher::new();
 
-    nil.send("hash", &[]).try_convert_to::<Integer>().unwrap().to_i64().hash(&mut hasher1);
+    unsafe { nil.send("hash", &[]) }.try_convert_to::<Integer>().unwrap().to_i64().hash(&mut hasher1);
     ho.hash(&mut hasher2);
 
     let hash1 = hasher1.finish();
