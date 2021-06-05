@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = RustyLRU::VERSION
   spec.authors       = ['Alastair Pharo']
   spec.email         = ['me@asph.dev']
+  spec.required_ruby_version = '>= 2.5'
 
   spec.summary       = 'An LRU cache implemented in Rust'
   spec.description   = <<-DESC

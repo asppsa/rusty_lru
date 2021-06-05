@@ -25,6 +25,7 @@ namespace :check do
     end
   end
 
+  desc 'Check memory consumption'
   task mem: 'cargo:build' do
     require 'rusty_lru'
     require 'securerandom'
@@ -34,11 +35,12 @@ namespace :check do
 
     loop do
       1_000_000.times { rusty[SecureRandom.random_bytes(100)] ||= SecureRandom.random_bytes(100) }
-      p %i[size resident shared text lib data dt].zip(statm.read.split(' ').map(&:to_i)).to_h.slice(:size, :resident, :data)
+      p %i[size resident shared text lib data dt].zip(statm.read.split.map(&:to_i)).to_h.slice(:size, :resident, :data)
       statm.rewind
     end
   end
 
+  desc 'Check thread safety'
   task threadsafe: 'cargo:build' do
     require 'rusty_lru'
     require 'securerandom'
@@ -48,15 +50,17 @@ namespace :check do
       [j, SecureRandom.uuid]
     end
 
-    pairs.map do |j, v|
+    return_values = pairs.map do |j, v|
       Thread.new do
-        created_values = (0...100).map do
+        (0...100).map do
           # Each thread tries to create the same pair.  Only one should
           # succeed.
           Thread.new { rusty.create(j, v) }
         end.map(&:value)
       end
-    end.map(&:value).each do |values|
+    end
+
+    return_values.each do |values|
       count = values.select(&:itself).size
       raise "#{j}: Got #{count}" unless count == 1
     end

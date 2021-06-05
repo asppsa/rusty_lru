@@ -11,10 +11,26 @@ AllCops:
 Layout/LineLength:
   Enabled: false
 
+Lint/EmptyBlock:
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - ./*.gemspec
     - spec/**/*.rb
+    - tasks/**/*.rake
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: false
