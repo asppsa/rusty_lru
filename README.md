@@ -1,7 +1,7 @@
 # RustyLRU
 
 [![Gem Version](https://badge.fury.io/rb/rusty_lru.svg)](https://badge.fury.io/rb/rusty_lru)
-[![Build Status](https://travis-ci.org/asppsa/rusty_lru.svg?branch=master)](https://travis-ci.org/asppsa/rusty_lru)
+[![CI](https://github.com/asppsa/rusty_lru/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/asppsa/rusty_lru/actions/workflows/ci.yml)
 
 This gem provides an [LRU
 cache](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))
