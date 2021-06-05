@@ -5,7 +5,7 @@ RSpec.shared_examples 'a hash map' do
     end
   end
 
-  shared_examples :length do
+  shared_examples 'length' do
     it 'is initially zero' do
       expect(subject.public_send(length)).to eq 0
     end
@@ -20,12 +20,14 @@ RSpec.shared_examples 'a hash map' do
 
   describe '#size' do
     let(:length) { :size }
-    include_examples :length
+
+    include_examples 'length'
   end
 
   describe '#length' do
     let(:length) { :length }
-    include_examples :length
+
+    include_examples 'length'
   end
 
   describe '#[]=' do
@@ -95,7 +97,7 @@ RSpec.shared_examples 'a hash map' do
 
     it 'removes items by key' do
       expect { subject.delete('x') }
-        .to change { subject.length }
+        .to change(subject, :length)
         .from(1)
         .to(0)
     end
@@ -108,12 +110,12 @@ RSpec.shared_examples 'a hash map' do
   describe '#empty?' do
     it 'is true iff there are no items' do
       expect { subject['x'] = 1 }
-        .to change { subject.empty? }
+        .to change(subject, :empty?)
         .from(true)
         .to(false)
 
       expect { subject.delete('x') }
-        .to change { subject.empty? }
+        .to change(subject, :empty?)
         .from(false)
         .to(true)
     end
@@ -183,18 +185,21 @@ RSpec.shared_examples 'a hash map' do
   describe '#each_pair' do
     let(:each) { :each_pair }
     let(:items) { pairs }
+
     it_behaves_like 'an enumerator'
   end
 
   describe '#each_key' do
     let(:each) { :each_key }
     let(:items) { pairs.map(&:first) }
+
     it_behaves_like 'an enumerator'
   end
 
   describe '#each_value' do
     let(:each) { :each_value }
     let(:items) { pairs.map(&:last) }
+
     it_behaves_like 'an enumerator'
   end
 
@@ -224,13 +229,13 @@ RSpec.shared_examples 'an LRU cache' do
 
       # An update will change it
       expect { subject[{ i: 0 }] = 'test' }
-        .to change { subject.lru_pair }
+        .to change(subject, :lru_pair)
         .from([{ i: 0 }, 0])
         .to([{ i: 1 }, 1])
 
       # A read will change it
       expect { subject[{ i: 1 }] }
-        .to change { subject.lru_pair }
+        .to change(subject, :lru_pair)
         .from([{ i: 1 }, 1])
         .to([{ i: 2 }, 2])
     end
@@ -250,7 +255,7 @@ RSpec.shared_examples 'an LRU cache' do
 
       99.times do |i|
         expect { subject.peek(i) }
-          .not_to change { subject.lru_pair }
+          .not_to change(subject, :lru_pair)
           .from([0, 0])
       end
     end
@@ -306,7 +311,7 @@ RSpec.shared_examples 'a capped LRU cache' do |cap|
 
         it 'creates extra space' do
           expect { subject['test'] = 'test' }
-            .not_to change { subject.lru_pair }
+            .not_to change(subject, :lru_pair)
             .from([0, 0])
         end
       end
@@ -314,7 +319,7 @@ RSpec.shared_examples 'a capped LRU cache' do |cap|
       context 'to a smaller capacity' do
         it 'deletes the least used items' do
           expect { subject.resize(cap - 2) }
-            .to change { subject.lru_pair }
+            .to change(subject, :lru_pair)
             .from([0, 0])
             .to([2, 2])
         end
@@ -326,23 +331,27 @@ end
 RSpec.describe RustyLRU::Cache do
   describe 'with no cap' do
     subject { described_class.new }
+
     it_behaves_like 'a hash map'
     it_behaves_like 'an LRU cache'
 
     context 'when resized' do
       before { subject.resize(200) }
+
       it_behaves_like 'a capped LRU cache', 200
     end
   end
 
   describe 'with a cap' do
     subject { described_class.new(100) }
+
     it_behaves_like 'a hash map'
     it_behaves_like 'an LRU cache'
     it_behaves_like 'a capped LRU cache', 100
 
     context 'when resized' do
       before { subject.resize(200) }
+
       it_behaves_like 'a capped LRU cache', 200
     end
   end
@@ -352,5 +361,6 @@ end
 # interested in.
 RSpec.describe Hash do
   subject { described_class.new }
+
   it_behaves_like 'a hash map'
 end
