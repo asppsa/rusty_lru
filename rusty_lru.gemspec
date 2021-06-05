@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rutie', '~> 0.0.3'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
-  spec.add_development_dependency 'irb', '~> 1.0.0'
+  spec.add_development_dependency 'irb', '~> 1.3.5'
   spec.add_development_dependency 'rake', '>= 12.3.3'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop', '~> 1.16.0'
